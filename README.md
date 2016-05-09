@@ -28,7 +28,27 @@ This project depends on `jrl.utils`.  It also depends on a `jrl.config` module. 
 
 ```
 
+## Installation
+
+Install via bower by adding the following to the `dependencies` key in `bower.json`:
+
+```bash
+dependencies: {
+    "jrl-chat": "git@bitbucket.org:jefflikeschicken/angular-api.git",
+}
+```
+
 ## Usage
+
+```html
+<!-- Configuration -->
+<script type="text/javascript" src="/js/config/jrl-config.js"></script>
+<!-- Utilities -->
+<script type="text/javascript" src="/bower_components/jrl-utils/dist/jrl.utils.min.js"></script>
+<!-- API Client -->
+<script type="text/javascript" src="/bower_components/jrl-api/dist/jrl-api.js"></script>
+```
+
 
 ```javascript
 angular.module('my-module', ['jrl-api'])
@@ -49,15 +69,6 @@ angular.module('my-module', ['jrl-api'])
 ;
 ```
 
-## Installation
-
-Install via bower by adding the following to the `dependencies` key in `bower.json`:
-
-```bash
-dependencies: {
-    "jrl-chat": "git@bitbucket.org:jefflikeschicken/angular-api.git",
-}
-```
 ## License
 
 This package is released under the [MIT License](https://opensource.org/licenses/MIT).  For full details refer to LICENSE
