@@ -4,7 +4,7 @@ This is an AngularJS API Client that provides client-side caching services.
 
 ## Dependencies
 
-This project depends on `jrl.utils` (which is still currently in a private BitBucket repository).  It also depends on a `jrl.config` module existing, which should be provided by consumers.  It is a configuration module used solely for storing static environment data used by this module.  This is accomplished by defining a `jrl.config` module with a single constant, `jrl-config`.  It should look something like this:
+This project depends on `jrl.utils` (which is still currently in a private BitBucket repository).  It also depends on a `jrl.config` module existing, which should be provided by consumers.  It is a configuration module used solely for storing static environment data, and is separated out in this way so that multiple environments can be easily supported.  This is accomplished by defining a `jrl.config` module within an implementing project that contains a single constant, `jrl-config`.  It should look something like this:
 
 ```javascript
 (function() {
