@@ -1,3 +1,9 @@
+/**
+ * jrl-cache AngularJS service
+ *
+ * @author Jeff Lambert 
+ * @license MIT
+ */
 (function() {
     'use strict';
 
@@ -9,6 +15,7 @@
     app.service('cache', [
         '$base64', 'common', 'jrl.config', 'localStorage',
         function($base64, common, config, localStorage) {
+            // Define what functions are publicly available for this service
             var svc = {
                 clear: clear,
                 gc: evictOldEntries,
@@ -16,13 +23,22 @@
                 lookup: lookup
             };
 
+            // Capture references to log functions
             var logInfo = common.getLogFn('cache', 'info'),
                 logWarn = common.getLogFn('cache', 'warn');
 
+            // Filters implemented on the API that are also taken into account
+            // here to determine whether or not a cache request has hit
+            // e.g. /messages?room_id=abc123 would automatically miss
             var implementedFilters = ['cursor', 'include', 'number'];
 
             return svc;
-
+/** Public functions **/
+            /**
+             * Clear out cache key
+             *
+             * @param string key
+             */
             function clear(key) {
                 if(key) {
                     localStorage.clear(key);
@@ -37,6 +53,9 @@
                 logInfo('Cache Cleared', key, true);
             }
 
+            /**
+             * Collect Garbage
+             */
             function evictOldEntries() {
                 if(config.app.debug) {
                     logInfo('Collecting Garbage', localStorage.space(), true);
@@ -98,6 +117,13 @@
                 });
             }
 
+            /**
+             * Insert data into cache
+             * 
+             * @param Object data
+             * @param Object request
+             * @param Object opts
+             */
             function insert(data, request, opts) {
                 // Do not store in cache if the options contain unimplemented 
                 // filters.
@@ -162,6 +188,12 @@
                 }
             }
 
+            /**
+             * Sees if there's a cache hit for the given request
+             *
+             * @param Object request
+             * @param Object opts
+             */
             function lookup(request, opts) {
 
                 var curRequest = cacheRequest(request),
@@ -226,7 +258,16 @@
 
                 return null;
             }
-
+/** Private functions **/
+            /**
+             * Recursively checks data to ensure that requested embedded 
+             * relational data is available in the local cache record
+             *
+             * @param string include - 
+             *      '/messages?include=room.owner' includes room along with each message
+             *      in the result, and the room owner along with each room
+             * @return boolean True if data record contains all requested data, false otherwise
+             */
             function checkInclude(include, data) {
                 if(!include.trim()) {
                     return true;
@@ -247,6 +288,12 @@
                 ;
             }
 
+            /**
+             * Builds an object that represents the current cache lookup
+             *
+             * @param req Request as sent to the API client
+             * @return Object Object that is useful for inspecting the cache
+             */
             function cacheRequest(req) {
                 var request = req.url.replace(
                         config.api.provider + '/' + config.api.version + '/',
@@ -264,11 +311,24 @@
                 return out;
             }
 
+            /**
+             * Calculates current age of a cache entry
+             *
+             * @param Object cacheEntry
+             * @return int
+             */
             function cacheAge(cacheEntry) {
                 var now = parseInt(new Date().getTime() / 1000);
                 return now - cacheEntry.time;
             }
 
+            /**
+             * Returns whether the given array contains filters that are not 
+             * implemented here.
+             *
+             * @param array filters
+             * @return boolean
+             */
             function hasUnimplementedFilters(filters) {
                 var i, s, len = filters.length;
                 for (i=0; i<len; ++i) {
@@ -280,6 +340,12 @@
                 return false;
             }
 
+            /**
+             * Quote Exceeded exception handler
+             *
+             * @param string key Cache key
+             * @param Object value Cache object attempting to be stored
+             */
             function quotaExceededError(key, value) {
                 logWarn('Storage quota exceeded, flushing entity cache', key, true);
                 localStorage.clear(key);

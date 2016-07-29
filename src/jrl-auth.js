@@ -1,3 +1,10 @@
+/**
+ * jrl-auth AngularJS service
+ *
+ * @author Jeff Lambert 
+ * @license MIT
+ */
+// WIP
 (function() {
     'use strict';
 
@@ -15,6 +22,7 @@
             $http, $location, $q, $timeout, 
             cache, common, config, localStorage
         ) {
+            // Define what functions are publicly available for this service
             var svc = {
                 hasUser: hasUser,
                 login: login,
@@ -24,6 +32,7 @@
                 user: user
             };
 
+            // Capture references to log functions
             var logInfo     = common.getLogFn(serviceId, 'info'),
                 logError    = common.getLogFn(serviceId, 'error'),
                 logWarn     = common.getLogFn(serviceId, 'warn')
@@ -33,12 +42,20 @@
 
             return svc;
 
+            /**
+             * @return bool True if a user is currently authenticated, false otherwise
+             */
             function hasUser() {
                 var identity = user();
 
                 return identity && identity.user_id;
             }
 
+            /**
+             * @param string username
+             * @param string password
+             * @return promise
+             */
             function login(username, password) {
                 if(!username || !password) {
                     logError('Username and password are required to login');
@@ -62,6 +79,9 @@
                 });
             }
 
+            /**
+             * @return promise - auto resolved, mainly for symmetry with login()
+             */
             function logout() {
                 var identity = user();
                 cache.clear();
@@ -88,6 +108,9 @@
                 return $q.defer().resolve();
             }
 
+            /**
+             * @param identity - Identity to register
+             */
             function registerIdentity(identity) {
                 identity.createdAt = parseInt(new Date().getTime() / 1000);
                 localStorage.setObject('identity', identity);
@@ -105,6 +128,9 @@
                 }
             }
 
+            /**
+             * Renew access token
+             */
             function renewToken() {
                 var identity = user();
 
@@ -134,6 +160,11 @@
                 );
             }
 
+            /**
+             * Retrieve current authenticated identity
+             *
+             * @return Object | null
+             */
             function user() {
                 var user = localStorage.getObject('identity');
 

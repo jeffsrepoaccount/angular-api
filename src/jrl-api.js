@@ -1,3 +1,9 @@
+/**
+ * jrl-api AngularJS service
+ *
+ * @author Jeff Lambert 
+ * @license MIT
+ */
 (function() {
     'use strict';
 
@@ -16,6 +22,7 @@
             $http, $interval, $location, $q, $rootScope, $timeout, $window, 
             auth, cache, common, config, localStorage
         ) {
+            // Define what functions are publicly available for this service
             var svc = {
                 get: get,
                 post: post,
@@ -23,45 +30,61 @@
                 gc: gc
             };
 
+            // Capture references to log functions
             var logSuccess = common.getLogFn('api', 'success'),
                 logInfo = common.getLogFn('api', 'info'),
                 logWarn = common.getLogFn('api', 'warn'),
                 logError = common.getLogFn('api', 'error');
 
-            if(config.app.caching_enabled && config.app.gc_timeout) {
-                // Set up garbage collection
-                $interval(function() {
-                    cache.gc();
-                }, config.app.gc_timeout * 1000);
-            }
+            startCollectingGarbage();
 
             return svc;
 
+/** Public functions **/
+            /**
+             * Performs HTTP GET
+             * @param opts - Request options
+             */
             function get(opts) {
+                // Request options structure:
+                //  { 
+                //      endpoint: 'resource', 
+                //      params: { 
+                //          cursor: 'MTc=', 
+                //          number: 42 
+                //      } 
+                //  }
                 var promise = $q.defer();
+                // Build a request to send to $http
                 var req = {
                         method: 'get',
                         url: buildUrl(opts),
                         headers: buildHeaders(auth.user())
                     },
+                // Check if there's a cache hit if enabled
                     cacheHit = config.app.caching_enabled ? 
                         cache.lookup(req, opts) : null
                 ;
 
                 if(cacheHit) {
+                    // Bail
                     promise.resolve(cacheHit);
                     logInfo('Resolved data from cache', cacheHit, true);
                     return promise.promise;
                 }
 
+                // Not in cache, reach out to server
                 send(req).then(function(data) {
 
                     // Validate structure of response returned
+                    // If there's meta data, there should be a cursor value included
                     if(!data.data || (data.meta && !data.meta.cursor)) {
                         logError('Invalid API Response Format', data, true);
                         promise.reject(data.data);
                     } else {
                         logInfo('Resolved data from server', data.data.data, true);
+                        // Go ahead and resolve promise first so anything waiting on it 
+                        // can continue.
                         if(!data.data.meta) {
                             promise.resolve(data.data.data);    
                         } else {
@@ -72,6 +95,7 @@
                             // Don't cache empty responses
                             ((data.meta && data.data.data.length) || data.data.data)
                         ) {
+                            // Cache data
                             cache.insert(data.data, req, opts);
                         }
                     }
@@ -84,7 +108,19 @@
                 return promise.promise;
             }
 
+            /**
+             * Perform HTTP POST
+             */
             function post(opts) {
+                // Request options structure:
+                //  { 
+                //      endpoint: 'resource/{id}', 
+                //      params: { 
+                //          data: {
+                //              resource_attribute: "value"
+                //          }
+                //      } 
+                //  }
                 var promise = $q.defer();
                 var req = {
                     method: 'post',
@@ -107,19 +143,52 @@
                 return promise.promise;
             }
 
+            /**
+             * Clears endpoint cache
+             *
+             * @param string endpoint
+             */
             function clearCache(endpoint) {
                 cache.clear(endpoint);
             }
 
+            /**
+             * Runs cache garbage collection routine
+             */
             function gc() {
                 cache.gc();
             }
 
-/**                                                                         **/
+/** Private functions **/
+            /**
+             * Startup garbage collection interval if configured
+             */
+            function startCollectingGarbage() {
+                if(config.app.caching_enabled && config.app.gc_timeout) {
+                    // Set up garbage collection
+                    $interval(function() {
+                        cache.gc();
+                    }, config.app.gc_timeout * 1000);
+                }
+            }
+
+            /**
+             * Sends an HTTP request
+             *
+             * @param Object req - passed through to angular $http
+             * @return promise
+             */
             function send(req) {
                 return $http(req);
             }
 
+            /**
+             * Constructs $http header object.
+             *
+             * @param Object user If user provided has an access_token, add 
+             *  bearer token to the request headers
+             * @return Object headers to send to $http
+             */
             function buildHeaders(user) {
                 var headers = {
                     'Content-Type': 'application/json',
@@ -133,6 +202,12 @@
                 return headers;
             }
 
+            /**
+             * @param Object opts - Request options object
+             * @return string URL request is trying to reach
+             *
+             * TODO: Move version to headers?
+             */
             function buildUrl(opts) {
                 var url = config.api.provider + '/' + config.api.version + '/' 
                     + opts.endpoint,
@@ -147,10 +222,16 @@
                 return  url + (params.length ? '?' + params.join('&') : '');
             }
 
+            /**
+             * Determines an appropriate message to send to the console
+             *
+             * @param data - As returned from API
+             * @param promise - Current promise that needs to be rejected
+             */
             function resolveError(data, promise) {
                 switch(data.status) {
                     case 400:
-                        // API thinks this client made a mistake?
+                        // API thinks this client made a mistake
                         logError('Client communication error', data.data);
                         rejectCurrent(promise);
                         break;

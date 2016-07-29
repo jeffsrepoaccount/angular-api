@@ -4,7 +4,7 @@ This is an AngularJS API Client that provides client-side caching services.
 
 ## Dependencies
 
-This project depends on `jrl.utils`.  It also depends on a `jrl.config` module.  As the name implies, it is a configuration module used solely for constructing a single constant.  It should look something like this:
+This project depends on `jrl.utils`.  It also depends on a `jrl.config` module existing, which is not provided.  It is a configuration module used solely for storing static environment data.  This is accomplished by defining a `jrl.config` module with a single constant, `jrl-config`.  It should look something like this:
 
 ```javascript
 (function() {
@@ -34,7 +34,9 @@ Install via bower by adding the following to the `dependencies` key in `bower.js
 
 ```bash
 dependencies: {
-    "jrl-chat": "git@bitbucket.org:jefflikeschicken/angular-api.git",
+    // ...
+    "jrl-api": "https://github.com/jeffsrepoaccount/angular-api.git",
+    // ...
 }
 ```
 
