@@ -21,6 +21,6 @@
   "dependencies": {
     "angular": "~1.5",
     "angular-base64": "~2.0.5",
-    "jrl-utils": "git@bitbucket.org:jefflikeschicken/jrl-utils.git"
+    "jrl-utils": "https://github.com/jeffsrepoaccount/angular-utils.git"
   }
 }
