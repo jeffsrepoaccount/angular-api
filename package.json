@@ -1,6 +1,6 @@
 {
   "name": "api-client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "AngularJS API Client",
   "main": "Gruntfile.js",
   "scripts": {
@@ -13,6 +13,9 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
+    "angular-base64": "^2.0.5"
+  },
+  "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-banner": "^0.6.0",
     "grunt-cli": "^1.2.0",
