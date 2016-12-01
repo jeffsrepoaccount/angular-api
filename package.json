@@ -1,13 +1,15 @@
 {
-  "name": "api-client",
-  "version": "0.0.2",
+  "name": "angular-api",
+  "version": "0.1.0",
   "description": "AngularJS API Client",
   "main": "Gruntfile.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "build": "grunt build"
   },
   "keywords": [
-    "api"
+    "api",
+    "angular"
   ],
   "author": "Jeff Lambert <jefflikeschicken@gmail.com>",
   "license": "MIT",

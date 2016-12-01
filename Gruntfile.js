@@ -1,5 +1,5 @@
 /**
- * jrl-api gruntfile
+ * angular-api gruntfile
  *
  * Usage: 
  *  grunt build
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
         uglify: {
             js: {
                 files: {
-                    './tmp/jrl-api.min.js': [ './src/*.js' ]
+                    './tmp/angular-api.min.js': [ './src/*.js' ]
                 },
                 options: {
                     mangle: false

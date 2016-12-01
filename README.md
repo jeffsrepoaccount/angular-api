@@ -4,15 +4,15 @@ This is an AngularJS API Client that provides client-side caching services.
 
 ## Dependencies
 
-This project depends on [`jrl.utils`](https://github.com/jeffsrepoaccount/angular-utils).  It also depends on a `jrl.config` module existing, which should be provided by consumers.  It is a configuration module used solely for storing static environment data, and is separated out in this way so that multiple environments can be easily supported.  This is accomplished by defining a `jrl.config` module within an implementing project that contains a single constant, `jrl-config`.  It should look something like this:
+This project depends on [`angular-utils`](https://github.com/jeffsrepoaccount/angular-utils).  It also depends on an `angular-config` module existing, which should be provided by consumers.  It is a configuration module used solely for storing static environment data, and is separated out in this way so that multiple environments can be easily supported.  This is accomplished by defining a `angular-config` module within an implementing project that contains a single constant, `angular.config`.  It should look something like this:
 
 ```javascript
 (function() {
     'use strict';
 
-    var module = angular.module('jrl.config', []);
+    var module = angular.module('angular-config', []);
 
-    module.constant('jrl.config', {
+    module.constant('angular.config', {
         app: {
             debug:              true,
             caching_enabled:    true,
@@ -35,7 +35,7 @@ Install via bower by adding the following to the `dependencies` key in `bower.js
 ```javascript
 dependencies: {
     // ...
-    "jrl-api": "https://github.com/jeffsrepoaccount/angular-api.git",
+    "angular-api": "https://github.com/jeffsrepoaccount/angular-api.git",
     // ...
 }
 ```
@@ -44,16 +44,21 @@ dependencies: {
 $ bower update
 ```
 
+You can also use NPM to install:
+
+```bash
+$ npm install jeffsrepoaccount/angular-api --save
+```
 
 ## Usage
 
 ```html
 <!-- Configuration -->
-<script type="text/javascript" src="/js/config/jrl-config.js"></script>
+<script type="text/javascript" src="/js/config/angular-config.js"></script>
 <!-- Utilities -->
-<script type="text/javascript" src="/bower_components/jrl-utils/dist/jrl.utils.min.js"></script>
+<script type="text/javascript" src="/bower_components/angular-utils/dist/angular-utils.min.js"></script>
 <!-- API Client -->
-<script type="text/javascript" src="/bower_components/jrl-api/dist/jrl-api.min.js"></script>
+<script type="text/javascript" src="/bower_components/angular-api/dist/angular-api.min.js"></script>
 ```
 
 
@@ -75,6 +80,26 @@ angular.module('my-module', ['jrl-api'])
     ])
 ;
 ```
+
+## Endpoints
+
+The endpoints constructed depend on the values supplied in `config.api`. `version` is currently assumed to exist as part of the url. For example, if I wish to request data from a `items` endpoint, with `config.api.provider = 'server.com/'` and `config.api.version = 'v2.3'`, the following will be used as the URL endpoint:
+
+    'server.com/v2.3/items'
+
+`params` get appended as URL parameters, so using the previous example configuration data with the above example request, the following will be the ultimate URL being requested:
+
+    `'server.com/v2.3/resource?cursor=MTc=&number=42'`
+
+## Caching
+
+Requests are cached in local storage. For more information about the structure of the cache, see [here](http://www.jeffreylambert.net/demos/chat/api##caching-heading).
+
+## Garbage Collection
+
+Since there's a cache, there's got to be garbage collection because fresher data is better data. It's behavior can be disabled entirely and controlled via values seen above in `angular-config`.  `cache_ttl` defines how long a record in the cache is considered valid, and `gc_timeout` controls how often the garbage collector will run. A `time` value is appended to each record in the cache, and anything older than `gc_timeout` will be removed, as well as any page in the cache that record is stored in.
+
+For more information about the garbage collector, see [here](http://www.jeffreylambert.net/demos/chat/api##garbage-heading). 
 
 ## License
 

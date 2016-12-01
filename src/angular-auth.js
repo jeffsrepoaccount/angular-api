@@ -9,27 +9,27 @@
     'use strict';
 
     var serviceId = 'auth',
-        app = angular.module('jrl-auth', [
-            'jrl.utils',
-            'jrl.config'
+        app = angular.module('angular-auth', [
+            'angular-utils',
+            'angular-config'
         ])
     ;
 
     app.service(serviceId, [
         '$http', '$location', '$q', '$timeout', 
-        'cache', 'common', 'jrl.config', 'localStorage',
+        'cache', 'common', 'angular-config', 'localStorage',
         function (
             $http, $location, $q, $timeout, 
             cache, common, config, localStorage
         ) {
             // Define what functions are publicly available for this service
             var svc = {
-                hasUser: hasUser,
-                login: login,
-                logout: logout,
-                registerIdentity: registerIdentity,
-                renewToken: renewToken,
-                user: user
+                hasUser:            hasUser,
+                login:              login,
+                logout:             logout,
+                registerIdentity:   registerIdentity,
+                renewToken:         renewToken,
+                user:               user
             };
 
             // Capture references to log functions

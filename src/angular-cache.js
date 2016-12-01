@@ -7,18 +7,18 @@
 (function() {
     'use strict';
 
-    var app = angular.module('jrl-cache', [
-        'jrl.utils',
-        'jrl.config'
+    var app = angular.module('angular-cache', [
+        'angular-utils',
+        'angular-config'
     ]);
 
     app.service('cache', [
-        '$base64', 'common', 'jrl.config', 'localStorage',
+        '$base64', 'common', 'angular-config', 'localStorage',
         function($base64, common, config, localStorage) {
             // Define what functions are publicly available for this service
             var svc = {
-                clear: clear,
-                gc: evictOldEntries,
+                clear:  clear,
+                gc:     evictOldEntries,
                 insert: insert,
                 lookup: lookup
             };

@@ -7,34 +7,35 @@
 (function() {
     'use strict';
 
-    var app = angular.module('jrl-api', [
-        'jrl.utils',
-        'jrl.config',
-        'jrl-cache',
-        'jrl-auth',
+    var app = angular.module('angular-api', [
+        'angular-utils',
+        'angular-config',
+        'angular-cache',
+        'angular-auth',
         'base64'
     ]);
 
     app.service('api', [
         '$http', '$interval', '$location', '$q', '$rootScope', '$timeout', '$window',
-        'auth', 'cache', 'common', 'jrl.config', 'localStorage',
+        'auth', 'cache', 'common', 'angular-config', 'localStorage',
         function(
             $http, $interval, $location, $q, $rootScope, $timeout, $window, 
             auth, cache, common, config, localStorage
         ) {
             // Define what functions are publicly available for this service
             var svc = {
-                get: get,
-                post: post,
+                get:        get,
+                post:       post,
                 clearCache: clearCache,
-                gc: gc
+                gc:         gc
             };
 
             // Capture references to log functions
-            var logSuccess = common.getLogFn('api', 'success'),
-                logInfo = common.getLogFn('api', 'info'),
-                logWarn = common.getLogFn('api', 'warn'),
-                logError = common.getLogFn('api', 'error');
+            var logSuccess  = common.getLogFn('api', 'success'),
+                logInfo     = common.getLogFn('api', 'info'),
+                logWarn     = common.getLogFn('api', 'warn'),
+                logError    = common.getLogFn('api', 'error')
+            ;
 
             startCollectingGarbage();
 
