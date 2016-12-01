@@ -13,7 +13,7 @@
     ]);
 
     app.service('cache', [
-        '$base64', 'common', 'angular-config', 'localStorage',
+        '$base64', 'common', 'angular.config', 'localStorage',
         function($base64, common, config, localStorage) {
             // Define what functions are publicly available for this service
             var svc = {

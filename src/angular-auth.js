@@ -17,7 +17,7 @@
 
     app.service(serviceId, [
         '$http', '$location', '$q', '$timeout', 
-        'cache', 'common', 'angular-config', 'localStorage',
+        'cache', 'common', 'angular.config', 'localStorage',
         function (
             $http, $location, $q, $timeout, 
             cache, common, config, localStorage

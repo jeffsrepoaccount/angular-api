@@ -17,7 +17,7 @@
 
     app.service('api', [
         '$http', '$interval', '$location', '$q', '$rootScope', '$timeout', '$window',
-        'auth', 'cache', 'common', 'angular-config', 'localStorage',
+        'auth', 'cache', 'common', 'angular.config', 'localStorage',
         function(
             $http, $interval, $location, $q, $rootScope, $timeout, $window, 
             auth, cache, common, config, localStorage
