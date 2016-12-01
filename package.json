@@ -15,7 +15,9 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "angular-base64": "^2.0.5"
+    "angular": "^1.5.9",
+    "angular-base64": "^2.0.5",
+    "angular-utils": "github:jeffsrepoaccount/angular-utils"
   },
   "devDependencies": {
     "grunt": "^1.0.1",
