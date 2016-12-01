@@ -1,4 +1,4 @@
-# jrl-api
+# angular-api
 
 This is an AngularJS API Client that provides client-side caching services.
 
