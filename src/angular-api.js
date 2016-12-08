@@ -196,7 +196,6 @@
              */
             function buildHeaders(user) {
                 var headers = {
-                    'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 };
 
