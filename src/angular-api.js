@@ -196,7 +196,8 @@
              */
             function buildHeaders(user) {
                 var headers = {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 };
 
                 if(user && user.access_token) {
