@@ -1,5 +1,5 @@
 /**
- * jrl-api AngularJS service
+ * angular-api AngularJS service
  *
  * @author Jeff Lambert 
  * @license MIT
@@ -36,6 +36,10 @@
                 logWarn     = common.getLogFn('api', 'warn'),
                 logError    = common.getLogFn('api', 'error')
             ;
+
+            // Override default $http header for content-type, we're going to be 
+            // sending data as a form would rather than as application/json.
+            $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
             startCollectingGarbage();
 

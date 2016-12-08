@@ -13,6 +13,10 @@
   ],
   "author": "Jeff Lambert <jefflikeschicken@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jeffsrepoaccount/angular-api.git"
+  },
   "readmeFilename": "README.md",
   "dependencies": {
     "angular": "^1.5.9",
