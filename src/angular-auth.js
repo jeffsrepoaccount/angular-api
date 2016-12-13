@@ -1,5 +1,5 @@
 /**
- * jrl-auth AngularJS service
+ * angular-auth AngularJS service
  *
  * @author Jeff Lambert 
  * @license MIT

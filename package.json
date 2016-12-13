@@ -1,6 +1,6 @@
 {
   "name": "angular-api-client",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "AngularJS API Client",
   "main": [ "dist/angular-api-client.min.js" ],
   "scripts": {
@@ -17,7 +17,7 @@
   "dependencies": {
     "angular": "^1.5.9",
     "angular-base64": "^2.0.5",
-    "angular-utils": "git+https://github.com/jeffsrepoaccount/angular-utils.git"
+    "jrl-angular-utils": "git+https://github.com/jeffsrepoaccount/jrl-angular-utils.git"
   },
   "devDependencies": {
     "grunt": "^1.0.1",

@@ -1,5 +1,5 @@
 /**
- * jrl-cache AngularJS service
+ * angular-cache AngularJS service
  *
  * @author Jeff Lambert 
  * @license MIT
