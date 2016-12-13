@@ -1,4 +1,4 @@
-# angular-api
+# angular-api-client
 
 This is an AngularJS API Client that provides client-side caching services.
 
@@ -35,7 +35,7 @@ Install via bower by adding the following to the `dependencies` key in `bower.js
 ```javascript
 dependencies: {
     // ...
-    "angular-api": "https://github.com/jeffsrepoaccount/angular-api.git",
+    "angular-api-client": "https://github.com/jeffsrepoaccount/angular-api-client.git",
     // ...
 }
 ```
@@ -47,7 +47,7 @@ $ bower update
 You can also use NPM to install:
 
 ```bash
-$ npm install jeffsrepoaccount/angular-api --save
+$ npm install jeffsrepoaccount/angular-api-client --save
 ```
 
 ## Usage
@@ -58,12 +58,12 @@ $ npm install jeffsrepoaccount/angular-api --save
 <!-- Utilities -->
 <script type="text/javascript" src="/bower_components/angular-utils/dist/angular-utils.min.js"></script>
 <!-- API Client -->
-<script type="text/javascript" src="/bower_components/angular-api/dist/angular-api.min.js"></script>
+<script type="text/javascript" src="/bower_components/angular-api/dist/angular-api-client.min.js"></script>
 ```
 
 
 ```javascript
-angular.module('my-module', ['jrl-api'])
+angular.module('my-module', ['angular-api-client'])
     .controller('MyCtrl', [
         'api',
         function(api) {
@@ -83,7 +83,7 @@ angular.module('my-module', ['jrl-api'])
 
 ## Endpoints
 
-The endpoints constructed depend on the values supplied in `config.api`. `version` is currently assumed to exist as part of the url. For example, if I wish to request data from a `items` endpoint, with `config.api.provider = 'server.com/'` and `config.api.version = 'v2.3'`, the following will be used as the URL endpoint:
+The endpoints constructed depend on the values supplied in `angular-config.api`. `version` is currently assumed to exist as part of the url. For example, if I wish to request data from an `items` endpoint, with `angular-config.api.provider = 'server.com/'` and `angular-config.api.version = 'v2.3'`, the following will be used as the URL endpoint:
 
     'server.com/v2.3/items'
 
@@ -91,15 +91,17 @@ The endpoints constructed depend on the values supplied in `config.api`. `versio
 
     `'server.com/v2.3/resource?cursor=MTc=&number=42'`
 
+API application prefixing can be accomplished by simply postfixing it to the provider value, e.g. `angular-config.api.provider = 'https://server.com/api/'` will result in the following resource endpoints being used:
+
+    `'https://servier.com/api/v2.3/resource'`
+
 ## Caching
 
-Requests are cached in local storage. For more information about the structure of the cache, see [here](http://www.jeffreylambert.net/demos/chat/api##caching-heading).
+Requests are cached in local storage. For more information about the structure of the cache, see [here](http://www.jeffreylambert.net/demos/chat/api).
 
 ## Garbage Collection
 
-Since there's a cache, there's got to be garbage collection because fresher data is better data. It's behavior can be disabled entirely and controlled via values seen above in `angular-config`.  `cache_ttl` defines how long a record in the cache is considered valid, and `gc_timeout` controls how often the garbage collector will run. A `time` value is appended to each record in the cache, and anything older than `gc_timeout` will be removed, as well as any page in the cache that record is stored in.
-
-For more information about the garbage collector, see [here](http://www.jeffreylambert.net/demos/chat/api##garbage-heading). 
+Since there's a cache, there's got to be garbage collection because fresher data is better data. It's behavior can be disabled entirely and controlled via values seen above in `angular-config.app`.  `cache_ttl` defines how long a record in the cache is considered valid, and `gc_timeout` controls how often the garbage collector will run. A `time` value is appended to each record in the cache, and anything older than `gc_timeout` will be removed, as well as any page in the cache that record is stored in.
 
 ## License
 

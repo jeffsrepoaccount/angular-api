@@ -7,7 +7,7 @@
 (function() {
     'use strict';
 
-    var app = angular.module('angular-api', [
+    var app = angular.module('angular-api-client', [
         'angular-utils',
         'angular-config',
         'angular-cache',
@@ -36,10 +36,6 @@
                 logWarn     = common.getLogFn('api', 'warn'),
                 logError    = common.getLogFn('api', 'error')
             ;
-
-            // Override default $http header for content-type, we're going to be 
-            // sending data as a form would rather than as application/json.
-            $http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
 
             startCollectingGarbage();
 
@@ -196,7 +192,7 @@
              */
             function buildHeaders(user) {
                 var headers = {
-                    'Accept': 'application/json',
+                    'Accept':       'application/json',
                     'Content-Type': 'application/json'
                 };
 
@@ -255,7 +251,7 @@
                         rejectCurrent(promise);
                         break;
                     case 429:
-                        common.toastWarning('Slow Down! API is rate limiting');
+                        logWarn('Slow Down! API is rate limiting', data.data);
                         rejectCurrent(promise);
                         break;
                     case 0:         // FALL THROUGH

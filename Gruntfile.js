@@ -1,9 +1,8 @@
 /**
- * angular-api gruntfile
+ * angular-api-client gruntfile
  *
  * Usage: 
  *  grunt build
- *  grunt test
  */
 module.exports = function(grunt) {
 
@@ -53,7 +52,7 @@ module.exports = function(grunt) {
         uglify: {
             js: {
                 files: {
-                    './tmp/angular-api.min.js': [ './src/*.js' ]
+                    './tmp/angular-api-client.min.js': [ './src/*.js' ]
                 },
                 options: {
                     mangle: false

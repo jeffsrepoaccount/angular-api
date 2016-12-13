@@ -1,15 +1,16 @@
 {
-  "name": "api-client",
+  "name": "angular-api-client",
   "authors": [
     "Jeff Lambert <jefflikeschicken@gmail.com>"
   ],
   "description": "AngularJS API Client",
-  "main": "src/jrl-api.js",
+  "main": [ "dist/angular-api-client.min.js" ],
   "keywords": [
-    "api"
+    "api",
+    "angular"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/jeffsrepoaccount/angular-api-client",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -19,8 +20,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.5",
-    "angular-base64": "~2.0.5",
+    "angular": "~1.5.9",
+    "angular-base64": "^2.0.5",
     "angular-utils": "https://github.com/jeffsrepoaccount/angular-utils.git"
   }
 }
