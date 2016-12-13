@@ -2,7 +2,7 @@
   "name": "angular-api-client",
   "version": "0.2.1",
   "description": "AngularJS API Client",
-  "main": [ "dist/angular-api-client.min.js" ],
+  "main": "dist/angular-api-client.min.js",
   "scripts": {
     "build": "grunt build"
   },
@@ -12,12 +12,12 @@
   ],
   "author": "Jeff Lambert <jefflikeschicken@gmail.com>",
   "license": "MIT",
-  "repository": "https://github.com/jeffsrepoaccount/angular-api.git",
+  "repository": "https://github.com/jeffsrepoaccount/angular-api-client.git",
   "readmeFilename": "README.md",
   "dependencies": {
     "angular": "^1.5.9",
     "angular-base64": "^2.0.5",
-    "jrl-angular-utils": "git+https://github.com/jeffsrepoaccount/jrl-angular-utils.git"
+    "jrl-angular-utils": "^0.1.1"
   },
   "devDependencies": {
     "grunt": "^1.0.1",
