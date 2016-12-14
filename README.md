@@ -4,7 +4,7 @@ This is an AngularJS API Client that provides client-side caching services.
 
 ## Dependencies
 
-This project depends on [`angular-utils`](https://github.com/jeffsrepoaccount/angular-utils).  It also depends on an `angular-config` module existing, which should be provided by consumers.  It is a configuration module used solely for storing static environment data, and is separated out in this way so that multiple environments can be easily supported.  This is accomplished by defining a `angular-config` module within an implementing project that contains a single constant, `angular.config`.  It should look something like this:
+This project depends on [`jrl-angular-utils`](https://github.com/jeffsrepoaccount/jrl-angular-utils).  It also depends on an `angular-config` module existing, which should be provided by consumers.  It is a configuration module used solely for storing static environment data, and is separated out in this way so that multiple environments can be easily supported.  This is accomplished by defining an `angular-config` module within an implementing project that contains a single constant, `angular.config`.  It should look something like this:
 
 ```javascript
 (function() {
@@ -35,7 +35,7 @@ Install via bower by adding the following to the `dependencies` key in `bower.js
 ```javascript
 dependencies: {
     // ...
-    "angular-api-client": "https://github.com/jeffsrepoaccount/angular-api-client.git",
+    "angular-api-client": "^0.2",
     // ...
 }
 ```
@@ -47,18 +47,18 @@ $ bower update
 You can also use NPM to install:
 
 ```bash
-$ npm install jeffsrepoaccount/angular-api-client --save
+$ npm install angular-api-client --save
 ```
 
 ## Usage
 
 ```html
-<!-- Configuration -->
+<!-- Configuration Module -->
 <script type="text/javascript" src="/js/config/angular-config.js"></script>
 <!-- Utilities -->
-<script type="text/javascript" src="/bower_components/angular-utils/dist/angular-utils.min.js"></script>
-<!-- API Client -->
-<script type="text/javascript" src="/bower_components/angular-api/dist/angular-api-client.min.js"></script>
+<script type="text/javascript" src="/bower_components/jrl-angular-utils/dist/angular-utils.min.js"></script>
+<!-- Client -->
+<script type="text/javascript" src="/bower_components/angular-api-client/dist/angular-api-client.min.js"></script>
 ```
 
 
@@ -68,7 +68,10 @@ angular.module('my-module', ['angular-api-client'])
         'api',
         function(api) {
             // Build request.  This request will hit the '/resource?number=42&cursor=MTc=' endpoint
-            var request = { endpoint: 'resource', params: { cursor: 'MTc=', number: 42 } };
+            var request = { 
+                endpoint: 'resource', 
+                params: { cursor: 'MTc=', number: 42 } 
+            };
 
             api.get(request).then(
                 function(data) {
@@ -93,7 +96,28 @@ The endpoints constructed depend on the values supplied in `angular-config.api`.
 
 API application prefixing can be accomplished by simply postfixing it to the provider value, e.g. `angular-config.api.provider = 'https://server.com/api/'` will result in the following resource endpoints being used:
 
-    `'https://servier.com/api/v2.3/resource'`
+    `'https://server.com/api/v2.3/{resource}'`
+
+## Multiple Services
+
+Multiple services can be registered by passing a string name and an object similar to `angular-config.api` to the `api.addService` function.  You can reference this service when making requests by adding a `service` key with a value equal to the name you register it as.
+
+```javascript
+api.addService('fooService', {
+    provider: 'http://www.foo.com/api/',
+    // Version is optional
+    version: '2.0'
+})
+
+// ...
+
+api.get({
+    endpoint: 'foo-items',
+    service: 'fooService'
+}).then(function(fooData) {
+    
+});
+```
 
 ## Caching
 
@@ -101,7 +125,7 @@ Requests are cached in local storage. For more information about the structure o
 
 ## Garbage Collection
 
-Since there's a cache, there's got to be garbage collection because fresher data is better data. It's behavior can be disabled entirely and controlled via values seen above in `angular-config.app`.  `cache_ttl` defines how long a record in the cache is considered valid, and `gc_timeout` controls how often the garbage collector will run. A `time` value is appended to each record in the cache, and anything older than `gc_timeout` will be removed, as well as any page in the cache that record is stored in.
+Since there's a cache, there's got to be garbage collection because fresher data is better data. It's behavior can be disabled entirely and controlled via values seen above in `angular-config.app`.  `cache_ttl` defines how long a record in the cache is considered valid, and `gc_timeout` controls how often the garbage collector will run. A `time` value is appended to each record in the cache, and anything older than `gc_timeout` will be removed as well as all other records in any page in the cache that record is stored in.
 
 ## License
 

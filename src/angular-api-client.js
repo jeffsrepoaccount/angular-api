@@ -27,7 +27,8 @@
                 get:        get,
                 post:       post,
                 clearCache: clearCache,
-                gc:         gc
+                gc:         gc,
+                addService: addService
             };
 
             // Capture references to log functions
@@ -36,6 +37,9 @@
                 logWarn     = common.getLogFn('api', 'warn'),
                 logError    = common.getLogFn('api', 'error')
             ;
+
+            // Hashmap of registered services
+            var services = {};
 
             startCollectingGarbage();
 
@@ -53,7 +57,8 @@
                 //      params: { 
                 //          cursor: 'MTc=', 
                 //          number: 42 
-                //      } 
+                //      },
+                //      service: 'reference'
                 //  }
                 var promise = $q.defer();
                 // Build a request to send to $http
@@ -120,7 +125,8 @@
                 //          data: {
                 //              resource_attribute: "value"
                 //          }
-                //      } 
+                //      },
+                //      service: 'reference'
                 //  }
                 var promise = $q.defer();
                 var req = {
@@ -151,6 +157,7 @@
              */
             function clearCache(endpoint) {
                 cache.clear(endpoint);
+                return svc;
             }
 
             /**
@@ -158,6 +165,15 @@
              */
             function gc() {
                 cache.gc();
+                return svc;
+            }
+
+            /** 
+             * Registers a service
+             */
+            function addService(name, s) {
+                services[name] = s;
+                return svc;
             }
 
 /** Private functions **/
@@ -207,13 +223,27 @@
              * @param Object opts - Request options object
              * @return string URL request is trying to reach
              *
-             * TODO: Move version to headers?
+             * TODO: Allow version in headers?
              */
             function buildUrl(opts) {
-                var url = config.api.provider + '/' + config.api.version + '/' 
-                    + opts.endpoint,
-                    params = []
+                var service = config.api,
+                    params  = [],
+                    url
                 ;
+
+                if(opts.service) {
+                    if(!services[opts.service]) {
+                        throw new ApiException('Service not registered: ' + opts.service);
+                    }
+
+                    service = services[opts.service];
+                }
+
+                url = service.provider + 
+                    (service.version ? '/' + service.version : '/') + 
+                    opts.endpoint
+                ;
+
                 if(opts.params) {
                     Object.keys(opts.params).forEach(function(key) {
                         params.push(encodeURIComponent(key) + '=' + encodeURIComponent(opts.params[key]));
@@ -270,4 +300,8 @@
             }
         }
     ]);
+
+    function ApiException(message) {
+        this.message = message;
+    }
 })();
